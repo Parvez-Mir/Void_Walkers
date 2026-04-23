@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* PrimeReact basic resets for Tailwind */
+@layer tailwind-base, primereact, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+:root {
+    --primary-color: #002865;
+    --primary-color-text: #ffffff;
+    --primary-color-hover: #001f4d;
+}
+
+.p-button {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+.p-button:enabled:hover {
+    background-color: var(--primary-color-hover) !important;
+    border-color: var(--primary-color-hover) !important;
+}
+
+/* Sidebar Menu Customizations for dark theme matching */
+.sidebar-menu-wrapper .p-menu .p-menuitem-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
+}
+.sidebar-menu-wrapper .p-menu .p-menuitem-link .p-menuitem-icon {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+.sidebar-menu-wrapper .p-menu .p-menuitem-link:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+.sidebar-menu-wrapper .p-menu .p-menuitem-link:hover .p-menuitem-icon {
+    color: #ffffff !important;
+}
+.sidebar-menu-wrapper .p-menu .p-submenu-header {
+    background-color: transparent !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
