@@ -96,13 +96,11 @@ export const buildPropertyFilters = (params = {}) => {
   const lng = toPositiveNumber(params.lng);
   const radiusKm = toPositiveNumber(params.radiusKm || params.radius);
   if (lat !== undefined && lng !== undefined && radiusKm !== undefined) {
+    // $geoWithin works in both find and countDocuments (unlike $near which
+    // requires a sort context). Earth radius ≈ 6378.1 km.
     filter["location.coordinates"] = {
-      $near: {
-        $geometry: {
-          type: "Point",
-          coordinates: [lng, lat]
-        },
-        $maxDistance: radiusKm * 1000
+      $geoWithin: {
+        $centerSphere: [[lng, lat], radiusKm / 6378.1]
       }
     };
   }

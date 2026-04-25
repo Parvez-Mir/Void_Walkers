@@ -98,6 +98,9 @@ export function PropertyHealthDashboard() {
   const ScoreIcon = healthScore >= 80 ? CheckCircle : healthScore >= 60 ? Clock : AlertTriangle;
   const scoreIconColor = healthScore >= 80 ? 'text-emerald-400' : healthScore >= 60 ? 'text-amber-400' : 'text-red-400';
 
+  const attentionItems = healthSignals.filter((s) => s.status === 'red' || s.status === 'amber');
+  const attentionTitles = attentionItems.map((s) => s.title).join(' and ');
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between flex-wrap gap-4">
@@ -116,27 +119,37 @@ export function PropertyHealthDashboard() {
         </div>
       </div>
 
-      <div className="flex gap-3 flex-wrap">
-        {['green', 'amber', 'red'].map((status) => {
-          const count = healthSignals.filter((s) => s.status === status).length;
-          const c = statusConfig[status];
-          const StatusIcon = c.Icon;
-          return (
-            <div
-              key={status}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full border ${c.bg} ${c.border}`}
-            >
-              <StatusIcon className={`w-4 h-4 ${c.text}`} />
-              <span className={`text-sm font-medium ${c.text}`}>
-                {count} {status === 'green' ? 'Healthy' : status === 'amber' ? 'Attention' : 'Critical'}
-              </span>
+      {attentionItems.length > 0 && (
+        <div className="rounded-xl bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/30 p-5">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                <Calendar className="w-6 h-6 text-amber-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">
+                  {attentionItems.length} {attentionItems.length === 1 ? 'item needs' : 'items need'} attention
+                </h3>
+                <p className="text-sm text-slate-400">{attentionTitles} {attentionItems.length === 1 ? 'is' : 'are'} due</p>
+              </div>
             </div>
-          );
-        })}
-      </div>
+            <button
+              type="button"
+              className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all"
+            >
+              Schedule Now
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {healthSignals.map((signal) => {
+        {[...healthSignals]
+          .sort((a, b) => {
+            const order = { red: 0, amber: 1, green: 2 };
+            return (order[a.status] ?? 3) - (order[b.status] ?? 3);
+          })
+          .map((signal) => {
           const c = statusConfig[signal.status];
           const StatusIcon = c.Icon;
           const Icon = signal.Icon;
@@ -182,25 +195,6 @@ export function PropertyHealthDashboard() {
         })}
       </div>
 
-      <div className="rounded-xl bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/30 p-5">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-              <Calendar className="w-6 h-6 text-amber-400" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white">2 items need attention</h3>
-              <p className="text-sm text-slate-400">Insurance renewal and AC service are due</p>
-            </div>
-          </div>
-          <button
-            type="button"
-            className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all"
-          >
-            Schedule Now
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

@@ -183,7 +183,7 @@ function NotificationBell({ mobile = false }) {
         </span>
       </button>
 
-      <div className={`absolute right-0 top-12 w-[390px] origin-top-right rounded-2xl border border-white/10 bg-slate-950/98 p-4 text-left shadow-2xl shadow-black/40 backdrop-blur-xl transition duration-200 ${isOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-2 opacity-0 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100'}`}>
+      <div className={`absolute right-0 top-12 w-[390px] origin-top-right rounded-2xl border border-white/10 bg-slate-950/95 p-4 text-left shadow-2xl shadow-black/40 backdrop-blur-xl transition duration-200 ${isOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-2 opacity-0 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100'}`}>
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-black uppercase tracking-wide text-white/40">Property alerts</p>

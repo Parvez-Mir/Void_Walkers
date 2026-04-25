@@ -161,7 +161,7 @@ export function ValuationMonitor() {
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <h3 className="text-xl font-bold text-white">AI Verdict: Hold</h3>
               <span className="inline-flex rounded-full px-2 py-0.5 text-xs font-medium bg-blue-500/20 text-blue-400 border border-blue-500/30">
-                PropSight AI
+                Insights AI
               </span>
             </div>
             <p className="text-sm text-slate-300 mb-4">

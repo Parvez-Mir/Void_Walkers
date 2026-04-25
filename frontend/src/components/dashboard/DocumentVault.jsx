@@ -90,7 +90,7 @@ export function DocumentVault() {
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <h3 className="text-lg font-semibold text-white">AI Document Analysis</h3>
               <span className="inline-flex rounded-full px-2 py-0.5 text-xs font-medium bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                PropSight AI
+                Insights AI
               </span>
             </div>
             <p className="text-sm text-slate-300 mb-3">{aiAnalysis.recommendation}</p>

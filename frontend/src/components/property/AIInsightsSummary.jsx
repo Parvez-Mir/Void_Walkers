@@ -41,7 +41,7 @@ export function AIInsightsSummary({ insights }) {
         </div>
         <div>
           <h2 className="text-xl font-bold text-foreground">AI Insights Summary</h2>
-          <p className="text-sm text-muted-foreground">Powered by PropSight Intelligence</p>
+          <p className="text-sm text-muted-foreground">Powered by Insights Intelligence</p>
         </div>
       </div>
 

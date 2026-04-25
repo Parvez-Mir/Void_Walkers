@@ -187,43 +187,66 @@ export default function Properties() {
               <span className="mb-1 block text-sm font-semibold text-muted-foreground">Keyword or AI query</span>
               <div className="flex items-center gap-2 rounded-xl border border-border bg-white px-3">
                 <Search className="h-4 w-4 text-muted-foreground" />
-                <input value={draft.q} onChange={(event) => setDraft({ ...draft, q: event.target.value, ai: true })} className="w-full bg-transparent py-3 outline-none" placeholder="3BHK in Bopal under 80 lakh" />
+                <input
+                  value={draft.q}
+                  onChange={(event) => setDraft({ ...draft, q: event.target.value })}
+                  className="w-full bg-transparent py-3 outline-none"
+                  placeholder="3BHK in Bopal under 80 lakh"
+                />
+                <button
+                  type="button"
+                  onClick={() => setDraft({ ...draft, ai: !draft.ai })}
+                  disabled={!draft.q}
+                  aria-pressed={draft.ai}
+                  title={!draft.q ? 'Type a query to enable AI search' : draft.ai ? 'AI interpretation is ON' : 'AI interpretation is OFF'}
+                  className={`my-1.5 inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                    draft.ai
+                      ? 'border-amber-400 bg-amber-50 text-amber-700 shadow-sm'
+                      : 'border-border bg-white text-muted-foreground hover:border-amber-200 hover:text-amber-700'
+                  }`}
+                >
+                  <Sparkles className={`h-3.5 w-3.5 ${draft.ai ? 'text-amber-500' : ''}`} />
+                  AI
+                  <span className={`rounded px-1 py-0.5 text-[10px] font-bold leading-none ${draft.ai ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600'}`}>
+                    {draft.ai ? 'ON' : 'OFF'}
+                  </span>
+                </button>
               </div>
             </label>
             <label>
               <span className="mb-1 block text-sm font-semibold text-muted-foreground">Locality</span>
-              <select value={draft.locality} onChange={(event) => setDraft({ ...draft, locality: event.target.value, ai: false })} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none">
+              <select value={draft.locality} onChange={(event) => setDraft({ ...draft, locality: event.target.value})} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none">
                 <option value="">Any locality</option>
                 {localities.map((locality) => <option key={locality} value={locality}>{locality}</option>)}
               </select>
             </label>
             <label>
               <span className="mb-1 block text-sm font-semibold text-muted-foreground">Sort</span>
-              <select value={draft.sortBy} onChange={(event) => setDraft({ ...draft, sortBy: event.target.value, ai: false })} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none">
+              <select value={draft.sortBy} onChange={(event) => setDraft({ ...draft, sortBy: event.target.value})} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none">
                 {sortOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
               </select>
             </label>
             <label>
               <span className="mb-1 block text-sm font-semibold text-muted-foreground">Property type</span>
-              <select value={draft.propertyType} onChange={(event) => setDraft({ ...draft, propertyType: event.target.value, ai: false })} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none">
+              <select value={draft.propertyType} onChange={(event) => setDraft({ ...draft, propertyType: event.target.value})} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none">
                 <option value="">Any type</option>
                 {propertyTypes.map((type) => <option key={type} value={type}>{type}</option>)}
               </select>
             </label>
             <label>
               <span className="mb-1 block text-sm font-semibold text-muted-foreground">Listing</span>
-              <select value={draft.listingType} onChange={(event) => setDraft({ ...draft, listingType: event.target.value, ai: false })} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none">
+              <select value={draft.listingType} onChange={(event) => setDraft({ ...draft, listingType: event.target.value})} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none">
                 <option value="">Sale or rent</option>
                 {listingTypes.map((type) => <option key={type} value={type}>{type}</option>)}
               </select>
             </label>
             <label>
               <span className="mb-1 block text-sm font-semibold text-muted-foreground">BHK</span>
-              <input value={draft.bhk} onChange={(event) => setDraft({ ...draft, bhk: event.target.value, ai: false })} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none" placeholder="2" />
+              <input value={draft.bhk} onChange={(event) => setDraft({ ...draft, bhk: event.target.value})} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none" placeholder="2" />
             </label>
             <label>
               <span className="mb-1 block text-sm font-semibold text-muted-foreground">Budget</span>
-              <input value={draft.maxPrice} onChange={(event) => setDraft({ ...draft, maxPrice: event.target.value, ai: false })} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none" placeholder="Max price" />
+              <input value={draft.maxPrice} onChange={(event) => setDraft({ ...draft, maxPrice: event.target.value})} className="w-full rounded-xl border border-border bg-white px-3 py-3 outline-none" placeholder="Max price" />
             </label>
           </div>
           <div className="mt-5 flex flex-wrap gap-3">

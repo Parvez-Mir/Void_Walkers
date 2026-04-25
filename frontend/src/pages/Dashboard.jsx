@@ -6,7 +6,6 @@ import { IncidentTimeline } from '../components/dashboard/IncidentTimeline';
 import { DocumentVault } from '../components/dashboard/DocumentVault';
 import { ComplianceCalendar } from '../components/dashboard/ComplianceCalendar';
 import { ValuationMonitor } from '../components/dashboard/ValuationMonitor';
-import { ComingSoon } from '../components/dashboard/ComingSoon';
 
 const SECTIONS = {
   health: PropertyHealthDashboard,
@@ -14,7 +13,6 @@ const SECTIONS = {
   documents: DocumentVault,
   compliance: ComplianceCalendar,
   valuation: ValuationMonitor,
-  'coming-soon': ComingSoon,
 };
 
 export default function Dashboard() {

@@ -54,7 +54,7 @@ export function TrustScoreCard({ scores }) {
             <Shield className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-foreground">PropSight Trust Score</h2>
+            <h2 className="text-xl font-bold text-foreground">Insights Trust Score</h2>
             <p className="text-sm text-muted-foreground">AI-powered property analysis</p>
           </div>
         </div>

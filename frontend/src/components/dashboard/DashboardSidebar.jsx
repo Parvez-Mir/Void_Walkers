@@ -7,7 +7,6 @@ import {
   TrendingUp,
   Building2,
   ChevronDown,
-  Sparkles,
 } from 'lucide-react';
 
 const menuGroups = [
@@ -30,7 +29,6 @@ const menuGroups = [
     title: 'Value',
     items: [
       { id: 'valuation', label: 'Valuation Monitor', Icon: TrendingUp },
-      { id: 'coming-soon', label: 'Coming Soon', Icon: Sparkles },
     ],
   },
 ];

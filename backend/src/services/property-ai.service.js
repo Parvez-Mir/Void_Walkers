@@ -1,12 +1,14 @@
 import { z } from "zod";
 import { bloomSearchProperties, listProperties } from "./property-search.service.js";
-import { normalizeToken, parseMultiValue } from "../utils/property.utils.js";
+import { normalizeToken, parseMultiValue, AHMEDABAD_LOCALITIES } from "../utils/property.utils.js";
 
 const aiSearchSchema = z.object({
   query: z.string().min(2),
   city: z.string().optional().default("Ahmedabad"),
   limit: z.number().int().min(1).max(20).optional().default(8)
 });
+
+const NEAR_RADIUS_KM = 5;
 
 const localityLexicon = [
   "bopal",
@@ -31,6 +33,57 @@ const localityLexicon = [
   "naroda",
   "maninagar"
 ];
+
+// Coordinates keyed by normalized locality name → [lng, lat]
+const localityCoords = AHMEDABAD_LOCALITIES.reduce((map, entry) => {
+  map[normalizeToken(entry.locality)] = entry.coordinates;
+  return map;
+}, {});
+
+// Levenshtein distance — small inline impl, no extra deps
+const levenshtein = (a, b) => {
+  const m = a.length;
+  const n = b.length;
+  if (!m) return n;
+  if (!n) return m;
+  const prev = new Array(n + 1);
+  const curr = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
+  for (let i = 1; i <= m; i++) {
+    curr[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
+      curr[j] = Math.min(curr[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
+    }
+    for (let j = 0; j <= n; j++) prev[j] = curr[j];
+  }
+  return prev[n];
+};
+
+const singleWordLexicon = localityLexicon.filter((entry) => !entry.includes(" "));
+
+// Extracts localities with typo tolerance: exact substring first, then per-token fuzzy fallback
+const extractLocalities = (normalized) => {
+  const exact = localityLexicon.filter((entry) => normalized.includes(entry));
+  if (exact.length) return exact;
+
+  const tokens = normalized.split(/\s+/).filter((t) => t.length >= 4);
+  const fuzzy = new Set();
+  for (const token of tokens) {
+    let best = null;
+    let bestDist = 3; // accept distance 0, 1, or 2
+    for (const entry of singleWordLexicon) {
+      if (Math.abs(token.length - entry.length) > 2) continue;
+      const dist = levenshtein(token, entry);
+      if (dist < bestDist) {
+        best = entry;
+        bestDist = dist;
+      }
+    }
+    if (best) fuzzy.add(best);
+  }
+  return Array.from(fuzzy);
+};
 
 const amenityLexicon = {
   gym: ["gym", "fitness"],
@@ -66,9 +119,9 @@ const heuristicParse = (query, city = "Ahmedabad") => {
   const normalized = normalizeToken(query);
   const bhkMatch = normalized.match(/(\d)\s*bhk/);
   const listingType = normalized.includes("rent") || normalized.includes("rental") ? "rent" : "sale";
-  const localities = localityLexicon
-    .filter((entry) => normalized.includes(entry))
-    .map((entry) => entry.replace(/\b\w/g, (character) => character.toUpperCase()));
+  const localities = extractLocalities(normalized).map((entry) =>
+    entry.replace(/\b\w/g, (character) => character.toUpperCase()),
+  );
   const amenities = Object.entries(amenityLexicon)
     .filter(([, terms]) => terms.some((term) => normalized.includes(term)))
     .map(([key]) => key);
@@ -163,12 +216,12 @@ export const runAiPropertySearch = async (input) => {
   }
 
   const localities = parseMultiValue(parsedQuery.localities);
+  const wantsNearby = Boolean(parsedQuery.nearLocalities);
   const searchParams = {
     city: parsedQuery.city || parsedInput.city,
     listingType: parsedQuery.listingType,
     propertyType: parsedQuery.propertyType,
     bhk: parsedQuery.bhk,
-    locality: localities,
     minPrice: parsedQuery.minPrice,
     maxPrice: parsedQuery.maxPrice,
     amenities: parsedQuery.amenities,
@@ -176,6 +229,25 @@ export const runAiPropertySearch = async (input) => {
     limit: parsedInput.limit,
     page: 1
   };
+
+  // When the parser flagged "near <locality>", switch to a geo-radius query
+  // around the matched locality's coordinates. Falls back to text-locality
+  // matching if we don't have coords for the place.
+  if (wantsNearby && localities.length) {
+    const primaryNorm = normalizeToken(localities[0]);
+    const coords = localityCoords[primaryNorm];
+    if (coords) {
+      searchParams.lng = coords[0];
+      searchParams.lat = coords[1];
+      searchParams.radiusKm = NEAR_RADIUS_KM;
+      parsedQuery.appliedRadiusKm = NEAR_RADIUS_KM;
+      parsedQuery.appliedNearLocality = localities[0];
+    } else {
+      searchParams.locality = localities;
+    }
+  } else if (localities.length) {
+    searchParams.locality = localities;
+  }
 
   let result = await listProperties(searchParams);
 

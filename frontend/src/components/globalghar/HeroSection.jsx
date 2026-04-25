@@ -12,10 +12,8 @@ const categories = [
   { label: 'Connectivity', options: ['Near metro', 'Highway access', 'Airport proximity'] },
 ];
 
-const defaultChips = ['Investment', 'Gated community', 'RERA verified', 'Near metro'];
-
 export function HeroSection() {
-  const [selectedChips, setSelectedChips] = useState(defaultChips);
+  const [selectedChips, setSelectedChips] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
