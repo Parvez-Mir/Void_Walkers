@@ -1,13 +1,29 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, Sparkles, X } from 'lucide-react';
 
 const navLinks = [
   { href: '/#features', label: 'Features' },
   { href: '/#how-it-works', label: 'How It Works' },
   { href: '/properties', label: 'Properties' },
-  { href: '/#for-nris', label: 'For NRIs' },
+  { href: '/properties?sortBy=investment', label: 'Investment Picks', ai: true },
 ];
+
+function NavLabel({ link }) {
+  if (!link.ai) {
+    return link.label;
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <Sparkles className="h-3.5 w-3.5 text-amber-400 transition-transform duration-300 group-hover:scale-110" />
+      <span>{link.label}</span>
+      <span className="-ml-0.5 -translate-y-2 text-[10px] font-black uppercase leading-none tracking-wide text-amber-400">
+        AI
+      </span>
+    </span>
+  );
+}
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,14 +50,14 @@ export function Navbar() {
               <span className="text-xl font-bold text-slate-900">P</span>
             </div>
             <span className="text-2xl font-bold tracking-tight text-white">
-              Prop<span className="text-amber-400">Sight</span>
+              Prop<span className="text-amber-400">Intel</span>
             </span>
           </Link>
 
           <div className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
-              <Link key={link.href} to={link.href} className="group relative font-medium text-white/70 transition-colors duration-300 hover:text-white">
-                {link.label}
+              <Link key={link.href} to={link.href} className={`group relative font-medium transition-colors duration-300 hover:text-white ${link.ai ? 'text-white' : 'text-white/70'}`}>
+                <NavLabel link={link} />
                 <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-amber-400 to-amber-600 transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
@@ -68,8 +84,8 @@ export function Navbar() {
         <div className={`overflow-hidden transition-all duration-300 md:hidden ${isMobileMenuOpen ? 'max-h-96 pb-6' : 'max-h-0'}`}>
           <div className="flex flex-col gap-4 border-t border-white/10 pt-4">
             {navLinks.map((link) => (
-              <Link key={link.href} to={link.href} className="py-2 font-medium text-white/80 transition-colors hover:text-amber-400">
-                {link.label}
+              <Link key={link.href} to={link.href} className="flex items-center gap-2 py-2 font-medium text-white/80 transition-colors hover:text-amber-400">
+                <NavLabel link={link} />
               </Link>
             ))}
             <div className="flex flex-col gap-3 border-t border-white/10 pt-4">

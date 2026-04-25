@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Filter, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
-import { Navbar } from '../components/propsight/Navbar';
-import { Footer } from '../components/propsight/Footer';
-import { PropertyCard } from '../components/propsight/PropertyCard';
+import { Navbar } from '../components/propintel/Navbar';
+import { Footer } from '../components/propintel/Footer';
+import { PropertyCard } from '../components/propintel/PropertyCard';
 import { aiSearchProperties, bloomSearchProperties, getPropertyMeta, listProperties } from '../services/propertyApi';
 
 const sortOptions = [

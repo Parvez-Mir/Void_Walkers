@@ -57,7 +57,7 @@ const Register = () => {
                 <div className="flex items-center justify-center">
                     <i className="pi pi-box text-darkBlue text-5xl"></i>
                 </div>
-                <div className="my-2 text-center text-3xl font-bold text-darkBlue">BrandPortal</div>
+                <div className="my-2 text-center text-3xl font-bold text-darkBlue">PropIntel</div>
                 
                 {errorMsg && <div className="p-3 mb-4 bg-red-100 text-red-700 rounded text-center font-semibold">{errorMsg}</div>}
                 

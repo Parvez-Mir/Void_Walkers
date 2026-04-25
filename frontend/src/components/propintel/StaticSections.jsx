@@ -55,7 +55,7 @@ export function StatsSection() {
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="relative overflow-hidden bg-background py-24">
+    <section id="features" className="relative scroll-mt-24 overflow-hidden bg-background py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-4 py-2">
@@ -104,7 +104,7 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="bg-muted/30 py-24">
+    <section id="how-it-works" className="scroll-mt-24 bg-muted/30 py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-20 text-center">
           <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">
@@ -131,7 +131,7 @@ export function HowItWorks() {
 
 export function TrustSection() {
   return (
-    <section id="for-nris" className="relative overflow-hidden bg-background py-24">
+    <section id="for-nris" className="relative scroll-mt-24 overflow-hidden bg-background py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">

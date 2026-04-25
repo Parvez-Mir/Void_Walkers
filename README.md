@@ -1,4 +1,6 @@
-# Void_Walkers
+# PropIntel
+
+Property intelligence for data-driven real estate search and recommendations.
 
 ## Property backend
 

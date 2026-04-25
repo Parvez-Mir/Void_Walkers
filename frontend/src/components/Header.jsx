@@ -68,7 +68,7 @@ const Header = ({ toggleSidebar }) => {
       </div>
       
       <div className="flex w-full cursor-pointer justify-center gap-2 text-center text-3xl font-bold text-darkBlue md:mx-5 md:justify-start md:text-start tracking-wide">
-        BrandPortal
+        PropIntel
       </div>
       
       <div className="mx-5">
