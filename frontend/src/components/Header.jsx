@@ -7,7 +7,7 @@ import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaCaretDown } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { BrandLogo } from './propintel/BrandLogo';
+import { BrandLogo } from './globalghar/BrandLogo';
 
 const Header = ({ toggleSidebar }) => {
   const dispatch = useDispatch();

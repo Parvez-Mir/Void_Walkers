@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Backend API for PropIntel property intelligence",
+  "description": "Backend API for GlobalGhar property intelligence",
   "main": "src/app.js",
   "type": "module",
   "scripts": {

@@ -1,8 +1,8 @@
-import { Navbar } from '../components/propintel/Navbar';
-import { HeroSection } from '../components/propintel/HeroSection';
-import { FeaturedProperties } from '../components/propintel/FeaturedProperties';
-import { StatsSection, FeaturesSection, HowItWorks, TrustSection, CTASection } from '../components/propintel/StaticSections';
-import { Footer } from '../components/propintel/Footer';
+import { Navbar } from '../components/globalghar/Navbar';
+import { HeroSection } from '../components/globalghar/HeroSection';
+import { FeaturedProperties } from '../components/globalghar/FeaturedProperties';
+import { StatsSection, FeaturesSection, HowItWorks, TrustSection, CTASection } from '../components/globalghar/StaticSections';
+import { Footer } from '../components/globalghar/Footer';
 
 export default function Home() {
   return (

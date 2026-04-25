@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Bed, Building2, Calendar, CheckCircle, IndianRupee, MapPin, Maximize, Phone, Shield, Star } from 'lucide-react';
-import { Navbar } from '../components/propintel/Navbar';
-import { Footer } from '../components/propintel/Footer';
-import { PropertyCard } from '../components/propintel/PropertyCard';
+import { Navbar } from '../components/globalghar/Navbar';
+import { Footer } from '../components/globalghar/Footer';
+import { PropertyCard } from '../components/globalghar/PropertyCard';
 import { getProperty, listProperties } from '../services/propertyApi';
 import { formatArea, formatBhk, formatPrice, getAmenityLabels, getLocationLabel, getPropertyGallery, getScore } from '../utils/propertyFormat';
 

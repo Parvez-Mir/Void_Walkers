@@ -2,7 +2,7 @@ import React from 'react';
 import { Sidebar as PrimeSidebar } from 'primereact/sidebar';
 import { Menu } from 'primereact/menu';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { BrandLogo } from './propintel/BrandLogo';
+import { BrandLogo } from './globalghar/BrandLogo';
 
 const SidebarComponent = ({ visible, setVisible }) => {
   const navigate = useNavigate();

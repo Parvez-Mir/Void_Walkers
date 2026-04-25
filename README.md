@@ -1,4 +1,4 @@
-# PropIntel
+# GlobalGhar
 
 Property intelligence for data-driven real estate search and recommendations.
 

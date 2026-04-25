@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowRight, Building2, Eye, EyeOff, Globe, Lock, Shield, UserRound } from 'lucide-react';
 import { loginSuccess } from '../store/authSlice';
 import api from '../utils/api';
-import { BrandLogo } from '../components/propintel/BrandLogo';
+import { BrandLogo } from '../components/globalghar/BrandLogo';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -89,12 +89,12 @@ export default function Login() {
 
           <div className="glass-dark rounded-2xl p-6">
             <p className="italic text-white/90">
-              "PropIntel makes property discovery feel data-driven instead of guess-driven."
+              "GlobalGhar makes property discovery feel data-driven instead of guess-driven."
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <img src="/propintel-logo.svg" alt="" className="h-10 w-14 rounded-lg bg-white object-contain p-1 shadow-lg shadow-amber-500/20" />
+              <img src="/globalghar-logo.svg" alt="" className="h-10 w-14 rounded-lg bg-white object-contain p-1 shadow-lg shadow-amber-500/20" />
               <div>
-                <p className="font-semibold text-white">PropIntel Research</p>
+                <p className="font-semibold text-white">GlobalGhar Research</p>
                 <p className="text-sm text-white/60">AI-assisted property intelligence</p>
               </div>
             </div>

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowRight, Building2, Check, Eye, EyeOff, Globe, Lock, Mail, Shield, Sparkles, User } from 'lucide-react';
 import api from '../utils/api';
-import { BrandLogo } from '../components/propintel/BrandLogo';
+import { BrandLogo } from '../components/globalghar/BrandLogo';
 
 const initialForm = {
   fullName: '',

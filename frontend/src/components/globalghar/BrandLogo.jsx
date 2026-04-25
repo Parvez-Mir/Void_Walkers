@@ -35,13 +35,13 @@ export function BrandLogo({
 
   const mark = (
     <span className={`${dimensions.mark} flex shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 shadow-lg shadow-amber-500/20 transition-transform duration-300 group-hover:scale-105`}>
-      <img src="/propintel-logo.svg" alt="" className="h-full w-full object-contain" />
+      <img src="/globalghar-logo.svg" alt="" className="h-full w-full object-contain" />
     </span>
   );
 
   const wordmark = showText ? (
     <span className={`${dimensions.text} font-bold tracking-tight ${textColor}`}>
-      Prop<span className={accentColor}>Intel</span>
+      Global<span className={accentColor}>Ghar</span>
     </span>
   ) : null;
 
