@@ -12,7 +12,7 @@ const footerLinks = {
     { label: 'About', href: '/#features' },
     { label: 'Search', href: '/properties' },
     { label: 'Login', href: '/login' },
-    { label: 'Register', href: '/register' },
+    { label: 'Sign Up', href: '/signup' },
   ],
 };
 

@@ -67,7 +67,7 @@ export function Navbar() {
             <Link to="/login" className="rounded-lg px-4 py-2 font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white">
               Login
             </Link>
-            <Link to="/register" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 font-semibold text-slate-900 shadow-lg shadow-amber-500/30 transition-all duration-300 hover:scale-105 hover:from-amber-500 hover:to-amber-600">
+            <Link to="/signup" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 font-semibold text-slate-900 shadow-lg shadow-amber-500/30 transition-all duration-300 hover:scale-105 hover:from-amber-500 hover:to-amber-600">
               Get Started
             </Link>
           </div>
@@ -92,7 +92,7 @@ export function Navbar() {
               <Link to="/login" className="rounded-lg border border-white/20 px-4 py-2 text-center font-semibold text-white">
                 Login
               </Link>
-              <Link to="/register" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-center font-semibold text-slate-900">
+              <Link to="/signup" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-center font-semibold text-slate-900">
                 Get Started
               </Link>
             </div>

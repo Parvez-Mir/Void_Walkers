@@ -47,6 +47,7 @@ function App() {
         <Route path="/properties/:identifier" element={<PropertyDetails />} />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+        <Route path="/signup" element={<PublicRoute><Register /></PublicRoute>} />
         <Route
           path="/dashboard"
           element={
