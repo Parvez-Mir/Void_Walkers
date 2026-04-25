@@ -30,9 +30,11 @@ app.use(helmet());
 
 // Route imports
 import authRouter from "./routes/auth.routes.js";
+import propertyRouter from "./routes/property.routes.js";
 
 // Routes declaration
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/properties", propertyRouter);
 
 // Basic Route
 app.get("/api/v1/health", (req, res) => {
