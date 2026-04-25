@@ -169,7 +169,7 @@ export function PropertyLocationMap({ property, nearby = [], radiusKm = 5 }) {
   const nearbyCards = nearby.slice(0, 6);
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
+    <section className="property-location-map overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
       <div className="flex flex-col gap-3 border-b border-border px-6 py-5 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm font-medium text-amber-600">Micro-market map</p>
@@ -185,7 +185,7 @@ export function PropertyLocationMap({ property, nearby = [], radiusKm = 5 }) {
       </div>
 
       <div className="grid gap-0 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="relative min-h-[420px] bg-muted">
+        <div className="relative z-0 min-h-[420px] overflow-hidden bg-muted">
           <div ref={mapRef} className="h-full min-h-[420px] w-full" />
 
           {status === 'error' && (
