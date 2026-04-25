@@ -45,7 +45,7 @@ const Login = () => {
                 localStorage.setItem('refreshToken', refreshToken);
 
                 dispatch(loginSuccess({ user }));
-                navigate('/');
+                navigate('/dashboard');
             } catch (error) {
                 setErrorMsg(error.response?.data?.message || "Login failed");
             } finally {

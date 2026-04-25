@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.3",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "axios": "^1.6.8",
     "chart.js": "^4.4.2",
     "formik": "^2.4.5",
     "hackathon-template": "file:..",
+    "lucide-react": "^0.564.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.6.3",
     "react": "^18.2.0",
