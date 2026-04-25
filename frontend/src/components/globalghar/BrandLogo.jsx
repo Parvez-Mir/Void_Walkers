@@ -8,15 +8,15 @@ const alignClasses = {
 
 const sizeClasses = {
   sm: {
-    mark: 'h-10 w-14',
+    mark: 'h-10 w-12',
     text: 'text-2xl',
   },
   md: {
-    mark: 'h-12 w-16',
+    mark: 'h-12 w-14',
     text: 'text-3xl',
   },
   lg: {
-    mark: 'h-14 w-20',
+    mark: 'h-14 w-16',
     text: 'text-3xl',
   },
 };
@@ -34,8 +34,8 @@ export function BrandLogo({
   const accentColor = tone === 'dark' ? 'text-amber-600' : 'text-amber-400';
 
   const mark = (
-    <span className={`${dimensions.mark} flex shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 shadow-lg shadow-amber-500/20 transition-transform duration-300 group-hover:scale-105`}>
-      <img src="/globalghar-logo.svg" alt="" className="h-full w-full object-contain" />
+    <span className={`${dimensions.mark} flex shrink-0 items-center justify-center transition-transform duration-300 group-hover:scale-105`}>
+      <img src="/globalghar-logo.svg" alt="" className="h-full w-full object-contain drop-shadow-[0_8px_18px_rgba(245,158,11,0.18)]" />
     </span>
   );
 

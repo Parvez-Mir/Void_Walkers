@@ -92,7 +92,7 @@ export default function Login() {
               "GlobalGhar makes property discovery feel data-driven instead of guess-driven."
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <img src="/globalghar-logo.svg" alt="" className="h-10 w-14 rounded-lg bg-white object-contain p-1 shadow-lg shadow-amber-500/20" />
+              <img src="/globalghar-logo.svg" alt="" className="h-10 w-12 object-contain drop-shadow-[0_8px_18px_rgba(245,158,11,0.18)]" />
               <div>
                 <p className="font-semibold text-white">GlobalGhar Research</p>
                 <p className="text-sm text-white/60">AI-assisted property intelligence</p>
