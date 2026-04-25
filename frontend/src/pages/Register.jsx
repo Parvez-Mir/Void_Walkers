@@ -1,25 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowRight, Building2, Check, Eye, EyeOff, Globe, Lock, Mail, Shield, Sparkles, User } from 'lucide-react';
 import api from '../utils/api';
-
-const BrandLogo = ({ align = 'left', reverse = false }) => (
-  <Link to="/" className={`flex items-center gap-3 group w-fit ${align === 'center' ? 'mx-auto' : ''} ${align === 'right' ? 'ml-auto' : ''}`}>
-    {!reverse && (
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-500/30 transition-all duration-300 group-hover:scale-105 group-hover:shadow-amber-500/50">
-        <span className="text-2xl font-bold text-slate-900">P</span>
-      </div>
-    )}
-    <span className="text-3xl font-bold tracking-tight text-white">
-      Prop<span className="text-amber-400">Intel</span>
-    </span>
-    {reverse && (
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-500/30 transition-all duration-300 group-hover:scale-105 group-hover:shadow-amber-500/50">
-        <span className="text-2xl font-bold text-slate-900">P</span>
-      </div>
-    )}
-  </Link>
-);
+import { BrandLogo } from '../components/propintel/BrandLogo';
 
 const initialForm = {
   fullName: '',
@@ -31,6 +14,7 @@ const initialForm = {
 
 export default function Register() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +66,7 @@ export default function Register() {
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
       });
-      navigate('/login');
+      navigate('/login', { state: { from: location.state?.from }, replace: true });
     } catch (error) {
       setErrorMsg(error.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
@@ -199,7 +183,7 @@ export default function Register() {
 
           <p className="text-center text-white/60">
             Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-amber-400 transition-colors hover:text-amber-300">
+            <Link to="/login" state={{ from: location.state?.from }} className="font-semibold text-amber-400 transition-colors hover:text-amber-300">
               Sign In
             </Link>
           </p>

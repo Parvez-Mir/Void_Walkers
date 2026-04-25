@@ -1,24 +1,15 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowRight, Building2, Eye, EyeOff, Globe, Lock, Shield, UserRound } from 'lucide-react';
 import { loginSuccess } from '../store/authSlice';
 import api from '../utils/api';
-
-const BrandLogo = ({ align = 'left' }) => (
-  <Link to="/" className={`flex items-center gap-3 group w-fit ${align === 'center' ? 'mx-auto' : ''}`}>
-    <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-500/30 transition-all duration-300 group-hover:scale-105 group-hover:shadow-amber-500/50">
-      <span className="text-2xl font-bold text-slate-900">P</span>
-    </div>
-    <span className="text-3xl font-bold tracking-tight text-white">
-      Prop<span className="text-amber-400">Intel</span>
-    </span>
-  </Link>
-);
+import { BrandLogo } from '../components/propintel/BrandLogo';
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [identifier, setIdentifier] = useState('');
@@ -48,7 +39,9 @@ export default function Login() {
       localStorage.setItem('refreshToken', refreshToken);
 
       dispatch(loginSuccess({ user }));
-      navigate('/dashboard');
+      const from = location.state?.from;
+      const redirectTo = from ? `${from.pathname || '/dashboard'}${from.search || ''}${from.hash || ''}` : '/dashboard';
+      navigate(redirectTo, { replace: true });
     } catch (error) {
       setErrorMsg(error.response?.data?.message || 'Login failed. Please check your credentials.');
     } finally {
@@ -99,9 +92,7 @@ export default function Login() {
               "PropIntel makes property discovery feel data-driven instead of guess-driven."
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 font-bold text-slate-900">
-                P
-              </div>
+              <img src="/propintel-logo.svg" alt="" className="h-10 w-14 rounded-lg bg-white object-contain p-1 shadow-lg shadow-amber-500/20" />
               <div>
                 <p className="font-semibold text-white">PropIntel Research</p>
                 <p className="text-sm text-white/60">AI-assisted property intelligence</p>
@@ -187,7 +178,7 @@ export default function Login() {
 
           <p className="text-center text-white/60">
             Don't have an account?{' '}
-            <Link to="/signup" className="font-semibold text-amber-400 transition-colors hover:text-amber-300">
+            <Link to="/signup" state={{ from: location.state?.from }} className="font-semibold text-amber-400 transition-colors hover:text-amber-300">
               Create Account
             </Link>
           </p>

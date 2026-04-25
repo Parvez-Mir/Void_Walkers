@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
+import { BrandLogo } from './BrandLogo';
 
 const footerLinks = {
   product: [
@@ -29,14 +30,7 @@ export function Footer() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 border-b border-white/10 pb-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <Link to="/" className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-500/30">
-                <span className="text-xl font-bold text-slate-900">P</span>
-              </div>
-              <span className="text-2xl font-bold tracking-tight text-white">
-                Prop<span className="text-amber-400">Intel</span>
-              </span>
-            </Link>
+            <BrandLogo size="sm" className="mb-6" />
             <p className="mb-6 max-w-sm leading-relaxed text-white/60">AI-powered real estate search built for NRIs and remote buyers exploring Ahmedabad properties.</p>
             <div className="space-y-3">
               <a href="mailto:hello@propintel.com" className="flex items-center gap-3 text-white/60 transition-colors hover:text-amber-400">

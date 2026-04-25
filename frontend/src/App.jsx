@@ -11,12 +11,16 @@ import Layout from './components/Layout';
 
 function PrivateRoute({ children }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  const location = useLocation();
+  return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} replace />;
 }
 
 function PublicRoute({ children }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  return isAuthenticated ? <Navigate to="/dashboard" /> : children;
+  const location = useLocation();
+  const from = location.state?.from;
+  const redirectTo = from ? `${from.pathname || '/dashboard'}${from.search || ''}${from.hash || ''}` : '/dashboard';
+  return isAuthenticated ? <Navigate to={redirectTo} replace /> : children;
 }
 
 function ScrollToHash() {
@@ -44,7 +48,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/properties" element={<Properties />} />
-        <Route path="/properties/:identifier" element={<PropertyDetails />} />
+        <Route
+          path="/properties/:identifier"
+          element={
+            <PrivateRoute>
+              <PropertyDetails />
+            </PrivateRoute>
+          }
+        />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
         <Route path="/signup" element={<PublicRoute><Register /></PublicRoute>} />

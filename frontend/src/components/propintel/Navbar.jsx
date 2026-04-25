@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, Sparkles, X } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { LogOut, Menu, Sparkles, X } from 'lucide-react';
+import { loginSuccess, logout } from '../../store/authSlice';
+import api from '../../utils/api';
+import { BrandLogo } from './BrandLogo';
 
 const navLinks = [
   { href: '/#features', label: 'Features' },
@@ -28,7 +32,12 @@ function NavLabel({ link }) {
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
+  const userEmail = user?.email || localStorage.getItem('email') || '';
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -41,18 +50,43 @@ export function Navbar() {
     setIsMobileMenuOpen(false);
   }, [location.pathname, location.hash]);
 
+  useEffect(() => {
+    if (!isAuthenticated || userEmail) return;
+
+    let isMounted = true;
+
+    api.get('/auth/me')
+      .then((response) => {
+        const currentUser = response.data?.data;
+        if (isMounted && currentUser?.email) {
+          dispatch(loginSuccess({ user: currentUser }));
+        }
+      })
+      .catch(() => {
+        // Keep the nav from showing a username/name fallback if the session is stale.
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [dispatch, isAuthenticated, userEmail]);
+
+  const handleLogout = async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // Clear local auth even if the access token has already expired server-side.
+    } finally {
+      dispatch(logout());
+      navigate('/');
+    }
+  };
+
   return (
     <header className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${isScrolled || location.pathname !== '/' ? 'border-b border-white/5 bg-slate-900/95 shadow-lg shadow-black/10 backdrop-blur-xl' : 'bg-transparent'}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <nav className="flex h-20 items-center justify-between">
-          <Link to="/" className="group flex items-center gap-3">
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-500/30 transition-all duration-300 group-hover:scale-105">
-              <span className="text-xl font-bold text-slate-900">P</span>
-            </div>
-            <span className="text-2xl font-bold tracking-tight text-white">
-              Prop<span className="text-amber-400">Intel</span>
-            </span>
-          </Link>
+          <BrandLogo size="sm" />
 
           <div className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
@@ -63,14 +97,30 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden items-center gap-4 md:flex">
-            <Link to="/login" className="rounded-lg px-4 py-2 font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white">
-              Login
-            </Link>
-            <Link to="/signup" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 font-semibold text-slate-900 shadow-lg shadow-amber-500/30 transition-all duration-300 hover:scale-105 hover:from-amber-500 hover:to-amber-600">
-              Get Started
-            </Link>
-          </div>
+          {isAuthenticated ? (
+            <div className="hidden items-center gap-3 md:flex">
+              <span className="max-w-[240px] truncate rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-white/80" title={userEmail || 'Email loading'}>
+                {userEmail || 'Email loading'}
+              </span>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex items-center gap-2 rounded-lg border border-amber-400/30 px-3 py-2 text-sm font-semibold text-amber-400 transition-colors hover:bg-amber-400/10 hover:text-amber-300"
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="hidden items-center gap-4 md:flex">
+              <Link to="/login" className="rounded-lg px-4 py-2 font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white">
+                Login
+              </Link>
+              <Link to="/signup" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 font-semibold text-slate-900 shadow-lg shadow-amber-500/30 transition-all duration-300 hover:scale-105 hover:from-amber-500 hover:to-amber-600">
+                Get Started
+              </Link>
+            </div>
+          )}
 
           <button
             onClick={() => setIsMobileMenuOpen((value) => !value)}
@@ -88,14 +138,30 @@ export function Navbar() {
                 <NavLabel link={link} />
               </Link>
             ))}
-            <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
-              <Link to="/login" className="rounded-lg border border-white/20 px-4 py-2 text-center font-semibold text-white">
-                Login
-              </Link>
-              <Link to="/signup" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-center font-semibold text-slate-900">
-                Get Started
-              </Link>
-            </div>
+            {isAuthenticated ? (
+              <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
+                <div className="truncate rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-center text-sm font-semibold text-white/80" title={userEmail || 'Email loading'}>
+                  {userEmail || 'Email loading'}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-amber-400/30 px-4 py-2 font-semibold text-amber-400"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
+                <Link to="/login" className="rounded-lg border border-white/20 px-4 py-2 text-center font-semibold text-white">
+                  Login
+                </Link>
+                <Link to="/signup" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-center font-semibold text-slate-900">
+                  Get Started
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

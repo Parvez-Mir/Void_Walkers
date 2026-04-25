@@ -7,6 +7,7 @@ import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaCaretDown } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { BrandLogo } from './propintel/BrandLogo';
 
 const Header = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
@@ -67,8 +68,8 @@ const Header = ({ toggleSidebar }) => {
         <GiHamburgerMenu size={25} />
       </div>
       
-      <div className="flex w-full cursor-pointer justify-center gap-2 text-center text-3xl font-bold text-darkBlue md:mx-5 md:justify-start md:text-start tracking-wide">
-        PropIntel
+      <div className="flex w-full justify-center md:mx-5 md:justify-start">
+        <BrandLogo size="sm" tone="dark" />
       </div>
       
       <div className="mx-5">
