@@ -3,6 +3,7 @@ import {
   bloomSearchProperties,
   getPropertyByIdentifier,
   getPropertyFilterMeta,
+  getNearbyProperties,
   listProperties
 } from "../services/property-search.service.js";
 import { runAiPropertySearch } from "../services/property-ai.service.js";
@@ -60,6 +61,30 @@ export const getPropertyDetails = async (req, res, next) => {
       success: true,
       data: property,
       message: "Property fetched successfully"
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPropertyNearby = async (req, res, next) => {
+  try {
+    const property = await getPropertyByIdentifier(req.params.identifier);
+    if (!property) {
+      return res.status(404).json({
+        success: false,
+        message: "Property not found"
+      });
+    }
+
+    const items = await getNearbyProperties(property, req.query);
+    return res.status(200).json({
+      success: true,
+      data: {
+        center: property.location?.coordinates || null,
+        items
+      },
+      message: "Nearby properties fetched successfully"
     });
   } catch (error) {
     next(error);

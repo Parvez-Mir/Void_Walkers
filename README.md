@@ -26,3 +26,9 @@ Optional AI env:
 OPENAI_API_KEY=your_key
 OPENAI_MODEL=gpt-4.1-mini
 ```
+
+Frontend map env:
+
+```bash
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_browser_key
+```
