@@ -32,14 +32,18 @@ app.use(helmet());
 import authRouter from "./routes/auth.routes.js";
 import propertyRouter from "./routes/property.routes.js";
 
-// Routes declaration
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/properties", propertyRouter);
-
-// Basic Route
-app.get("/api/v1/health", (req, res) => {
+// Aggregate API router — single source of truth for every sub-route.
+const apiRouter = express.Router();
+apiRouter.use("/auth", authRouter);
+apiRouter.use("/properties", propertyRouter);
+apiRouter.get("/health", (req, res) => {
     res.status(200).json({ success: true, message: "Backend is running flawlessly!" });
 });
+
+// Canonical versioned mount + unversioned alias for clients that omit the prefix.
+const API_PREFIX = "/api/v1";
+app.use(API_PREFIX, apiRouter);
+app.use(apiRouter);
 
 // Error handling middleware (should be last)
 app.use(errorHandler);

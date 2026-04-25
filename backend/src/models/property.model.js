@@ -48,6 +48,156 @@ const furnishingDetailsSchema = new Schema(
   { _id: false }
 );
 
+// === Additive feature sub-schemas (Trust Score, AI Insights, etc.) ===
+
+const placeSchema = new Schema(
+  {
+    type: String, // 'school' | 'hospital' | 'metro' | 'mall' | 'park' | 'gym' | 'restaurant' | etc.
+    name: String,
+    distance: Number, // km
+    travelTime: {
+      car: Number // minutes
+    }
+  },
+  { _id: false }
+);
+
+const trustScoreSubSchema = new Schema(
+  {
+    score: { type: Number, default: null },
+    factors: { type: Schema.Types.Mixed, default: {} }
+  },
+  { _id: false }
+);
+
+const trustScoreSchema = new Schema(
+  {
+    aggregate: { type: Number, default: null },
+    safety: { type: trustScoreSubSchema, default: () => ({}) },
+    infrastructure: { type: trustScoreSubSchema, default: () => ({}) },
+    environment: { type: trustScoreSubSchema, default: () => ({}) },
+    investment: { type: trustScoreSubSchema, default: () => ({}) },
+    computedAt: Date
+  },
+  { _id: false }
+);
+
+const aiInsightsSchema = new Schema(
+  {
+    summary: String,
+    investmentRecommendation: {
+      verdict: { type: String, enum: ["buy", "hold", "avoid", null], default: null },
+      confidence: Number,
+      reasoning: String
+    },
+    riskAssessment: {
+      level: { type: String, enum: ["low", "medium", "high", null], default: null },
+      flags: { type: [String], default: [] },
+      reasoning: String
+    },
+    rentalPotential: {
+      monthlyEstimateInr: Number,
+      yieldPercent: Number,
+      tenantDemand: { type: String, enum: ["low", "medium", "high", null], default: null },
+      typicalTenantProfile: String
+    },
+    generatedAt: Date,
+    model: String
+  },
+  { _id: false }
+);
+
+const upcomingProjectSchema = new Schema(
+  {
+    name: String,
+    type: { type: String, enum: ["metro", "road", "airport", "commercial", "residential", "civic", null], default: null },
+    status: { type: String, enum: ["planned", "approved", "under-construction", "completed", null], default: null },
+    expectedCompletion: Date,
+    distanceM: Number,
+    impact: { type: String, enum: ["low", "medium", "high", null], default: null }
+  },
+  { _id: false }
+);
+
+const futureGrowthSchema = new Schema(
+  {
+    summaryScore: { type: Number, default: null },
+    upcomingProjects: { type: [upcomingProjectSchema], default: [] }
+  },
+  { _id: false }
+);
+
+const priceHistoryEntrySchema = new Schema(
+  {
+    month: String, // 'YYYY-MM'
+    perSqft: Number
+  },
+  { _id: false }
+);
+
+const comparableSchema = new Schema(
+  {
+    propertyId: String,
+    title: String,
+    perSqft: Number,
+    distanceM: Number,
+    areaSqft: Number
+  },
+  { _id: false }
+);
+
+const priceIntelligenceSchema = new Schema(
+  {
+    history: { type: [priceHistoryEntrySchema], default: [] },
+    comparables: { type: [comparableSchema], default: [] },
+    areaAvgPerSqft: { type: Number, default: null }
+  },
+  { _id: false }
+);
+
+const developerSnapshotSchema = new Schema(
+  {
+    legalName: String,
+    brandName: String,
+    verified: { type: Boolean, default: false },
+    badgeIssuedAt: Date,
+    trackRecord: {
+      projectsDelivered: Number,
+      onTimeRate: Number,
+      avgRating: Number
+    }
+  },
+  { _id: false }
+);
+
+const documentItemSchema = new Schema(
+  {
+    type: {
+      type: String,
+      enum: ["title-deed", "approval-plan", "occupancy-cert", "encumbrance", "khata", "patta", "noc", null],
+      default: null
+    },
+    label: String,
+    status: { type: String, enum: ["verified", "pending", "missing", null], default: null },
+    url: String
+  },
+  { _id: false }
+);
+
+const documentsSchema = new Schema(
+  {
+    rera: {
+      number: String,
+      state: String,
+      status: { type: String, enum: ["registered", "pending", "expired", "not-found", null], default: null },
+      verifiedAt: Date,
+      portalUrl: String
+    },
+    items: { type: [documentItemSchema], default: [] }
+  },
+  { _id: false }
+);
+
 const propertySchema = new Schema(
   {
     title: { type: String, required: true, trim: true, index: true },
@@ -186,7 +336,18 @@ const propertySchema = new Schema(
     normalizedLocalities: [{ type: String, trim: true, index: true }],
     source: { type: String, default: "mock-seed", trim: true },
     isActive: { type: Boolean, default: true, index: true },
-    isFeatured: { type: Boolean, default: false, index: true }
+    isFeatured: { type: Boolean, default: false, index: true },
+
+    // === Additive feature blocks ===
+    // Backed by sub-schemas defined above. All optional / nullable so existing
+    // (pre-additive) docs remain valid. Populated by migration + seed scripts.
+    trustScore: { type: trustScoreSchema, default: () => ({}) },
+    aiInsights: { type: aiInsightsSchema, default: () => ({}) },
+    futureGrowth: { type: futureGrowthSchema, default: () => ({}) },
+    priceIntelligence: { type: priceIntelligenceSchema, default: () => ({}) },
+    developer: { type: developerSnapshotSchema, default: null },
+    documents: { type: documentsSchema, default: () => ({}) },
+    nearbyPlaces: { type: [placeSchema], default: [] }
   },
   {
     timestamps: true
