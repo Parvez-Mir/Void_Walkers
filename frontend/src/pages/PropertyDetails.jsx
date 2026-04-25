@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Navbar } from '../components/globalghar/Navbar';
 import { Footer } from '../components/globalghar/Footer';
-import { getProperty } from '../services/propertyApi';
+import { getNearbyProperties, getProperty } from '../services/propertyApi';
 import { adaptPropertyForDetail } from '../utils/propertyDetailAdapter';
 
 import { PropertyHeader } from '../components/property/PropertyHeader';
@@ -15,10 +15,12 @@ import { DocumentPreview } from '../components/property/DocumentPreview';
 import { AIInsightsSummary } from '../components/property/AIInsightsSummary';
 import { PropertyAmenities } from '../components/property/PropertyAmenities';
 import { ContactAgent } from '../components/property/ContactAgent';
+import { PropertyLocationMap } from '../components/property/PropertyLocationMap';
 
 export default function PropertyDetails() {
   const { identifier } = useParams();
   const [raw, setRaw] = useState(null);
+  const [nearby, setNearby] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -26,10 +28,23 @@ export default function PropertyDetails() {
     let active = true;
     setLoading(true);
     setError('');
+    setNearby([]);
 
     getProperty(identifier)
       .then((data) => {
-        if (active) setRaw(data);
+        if (!active) return;
+        setRaw(data);
+        return getNearbyProperties(identifier, { radiusKm: 5, limit: 12 })
+          .then((nearbyData) => {
+            if (active) {
+              setNearby(nearbyData?.items || []);
+            }
+          })
+          .catch(() => {
+            if (active) {
+              setNearby([]);
+            }
+          });
       })
       .catch((err) => {
         if (active) setError(err.response?.data?.message || 'Property not found.');
@@ -75,6 +90,12 @@ export default function PropertyDetails() {
   }
 
   const property = adaptPropertyForDetail(raw);
+  const detailProperty = {
+    ...property,
+    rawPricing: raw?.pricing,
+    rawConfiguration: raw?.configuration,
+    rawArea: raw?.area,
+  };
 
   return (
     <main className="min-h-screen bg-background">
@@ -113,7 +134,8 @@ export default function PropertyDetails() {
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-              <PropertyHeader property={property.header} />
+              <PropertyHeader property={detailProperty.header} />
+              <PropertyLocationMap property={detailProperty} nearby={nearby} radiusKm={5} />
               <TrustScoreCard scores={property.trust} />
               <NeighborhoodInsights neighborhood={property.neighborhood} />
               <PriceIntelligence

@@ -352,6 +352,13 @@ export function adaptPropertyForDetail(p) {
     title: p.title,
     listingType: p.listingType,
     propertyType: p.propertyType,
+    identifier: p.slug || p.propertyCode || p._id,
+    coordinates: {
+      lng: Array.isArray(p.location?.coordinates?.coordinates) ? p.location.coordinates.coordinates[0] : null,
+      lat: Array.isArray(p.location?.coordinates?.coordinates) ? p.location.coordinates.coordinates[1] : null,
+    },
+    locality: p.location?.locality || '',
+    city: p.city || p.location?.city || 'Ahmedabad',
     images: gallery,
     header: headerProperty,
     trust: trustScores,

@@ -26,3 +26,7 @@ Optional AI env:
 OPENAI_API_KEY=your_key
 OPENAI_MODEL=gpt-4.1-mini
 ```
+
+Frontend map:
+
+Uses Leaflet with OpenStreetMap tiles on the property detail page. No API key is required for the current setup.

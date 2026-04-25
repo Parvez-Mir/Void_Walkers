@@ -18,6 +18,13 @@ export const getProperty = async (identifier) => {
   return response.data.data;
 };
 
+export const getNearbyProperties = async (identifier, params = {}) => {
+  const response = await api.get(`/properties/${identifier}/nearby`, {
+    params: cleanParams(params),
+  });
+  return response.data.data;
+};
+
 export const getPropertyMeta = async () => {
   const response = await api.get('/properties/meta/filters');
   return response.data.data;

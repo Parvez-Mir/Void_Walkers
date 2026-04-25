@@ -214,3 +214,56 @@ export const getPropertyFilterMeta = async () => {
     projectNames: projectNames.filter(Boolean).sort().slice(0, 100)
   };
 };
+
+export const getNearbyProperties = async (property, options = {}) => {
+  const coordinates = property?.location?.coordinates?.coordinates;
+  if (!Array.isArray(coordinates) || coordinates.length !== 2) {
+    return [];
+  }
+
+  const radiusKm = Math.min(25, Math.max(0.5, Number(options.radiusKm) || 5));
+  const limit = Math.min(24, Math.max(1, Number(options.limit) || 12));
+
+  const items = await Property.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: "Point",
+          coordinates
+        },
+        distanceField: "distanceMeters",
+        maxDistance: radiusKm * 1000,
+        spherical: true,
+        query: {
+          isActive: true,
+          _id: { $ne: property._id }
+        }
+      }
+    },
+    {
+      $project: {
+        title: 1,
+        slug: 1,
+        propertyCode: 1,
+        listingType: 1,
+        propertyType: 1,
+        city: 1,
+        location: 1,
+        pricing: 1,
+        configuration: 1,
+        area: 1,
+        building: 1,
+        media: 1,
+        scores: 1,
+        isFeatured: 1,
+        distanceKm: {
+          $round: [{ $divide: ["$distanceMeters", 1000] }, 2]
+        }
+      }
+    },
+    { $sort: { distanceKm: 1, isFeatured: -1, "scores.connectivityScore": -1 } },
+    { $limit: limit }
+  ]);
+
+  return items;
+};
