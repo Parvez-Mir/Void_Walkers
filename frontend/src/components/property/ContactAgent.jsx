@@ -1,18 +1,6 @@
-import { useState } from 'react';
-import { Phone, MessageCircle, Calendar, User } from 'lucide-react';
+import { Phone, MessageCircle, User, Handshake, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export function ContactAgent({ builder }) {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!name || !phone) return;
-    // TODO: wire to /api/v1/leads when the endpoint is ready
-    setSubmitted(true);
-  };
-
   return (
     <div className="bg-card rounded-2xl border border-border p-6 shadow-lg">
       <div className="flex items-center gap-4 mb-6">
@@ -46,40 +34,34 @@ export function ContactAgent({ builder }) {
         </button>
       </div>
 
-      {submitted ? (
-        <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-center">
-          <p className="text-sm font-medium text-emerald-800">Got it.</p>
-          <p className="text-xs text-emerald-700 mt-1">The sales team will reach out shortly.</p>
+      {/* Trusted partner CTA */}
+      <div className="rounded-xl bg-gradient-to-br from-amber-50 to-amber-100/40 border border-amber-200 p-5">
+        <div className="flex items-start gap-3 mb-4">
+          <div className="w-10 h-10 rounded-lg bg-white border border-amber-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+            <Handshake className="w-5 h-5 text-amber-600" />
+          </div>
+          <div className="min-w-0">
+            <h4 className="text-sm font-bold text-foreground">Connect with our Trusted Partner</h4>
+            <p className="text-xs text-muted-foreground mt-1">
+              End-to-end transaction support — site visits, paperwork, registration, and post-purchase setup handled by verified local partners vetted for NRI buyers.
+            </p>
+          </div>
         </div>
-      ) : (
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <p className="text-sm font-medium text-foreground">Request a callback</p>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Your name"
-            className="w-full rounded-lg bg-slate-50 border border-slate-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none px-3 py-2.5 text-sm"
-          />
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Phone number"
-            type="tel"
-            className="w-full rounded-lg bg-slate-50 border border-slate-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none px-3 py-2.5 text-sm"
-          />
-          <button
-            type="submit"
-            className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 transition"
-          >
-            <Calendar className="w-4 h-4" />
-            Schedule Visit
-          </button>
-        </form>
-      )}
 
-      <div className="mt-6 pt-4 border-t border-border">
+        <button
+          type="button"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 transition"
+        >
+          <Handshake className="w-4 h-4" />
+          Connect Now
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
+
+      <div className="mt-6 pt-4 border-t border-border flex items-center justify-center gap-1.5">
+        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
         <p className="text-xs text-center text-muted-foreground">
-          Your data is secure and only shared with the verified developer.
+          Only shared with verified partners that meet our trust criteria.
         </p>
       </div>
     </div>

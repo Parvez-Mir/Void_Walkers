@@ -6,7 +6,6 @@ import { Footer } from '../components/globalghar/Footer';
 import { getProperty } from '../services/propertyApi';
 import { adaptPropertyForDetail } from '../utils/propertyDetailAdapter';
 
-import { PropertyGallery } from '../components/property/PropertyGallery';
 import { PropertyHeader } from '../components/property/PropertyHeader';
 import { TrustScoreCard } from '../components/property/TrustScoreCard';
 import { NeighborhoodInsights } from '../components/property/NeighborhoodInsights';
@@ -81,12 +80,7 @@ export default function PropertyDetails() {
     <main className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Gallery sits below the fixed nav (pt-20 matches nav height) */}
-      <section className="pt-20">
-        <PropertyGallery images={property.images} name={property.header.name} />
-      </section>
-
-      <section className="py-12">
+      <section className="pt-28 pb-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Link
             to="/properties"
@@ -95,6 +89,27 @@ export default function PropertyDetails() {
             <ArrowLeft className="h-4 w-4" />
             Back to search
           </Link>
+
+          {/* Image gallery — preserved layout from earlier commit */}
+          <div className="mb-10 grid gap-4 lg:grid-cols-[1.4fr_0.6fr]">
+            <div className="overflow-hidden rounded-3xl bg-muted">
+              <img
+                src={property.images[0]}
+                alt={property.header.name}
+                className="h-[460px] w-full object-cover"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
+              {property.images.slice(1, 3).map((image) => (
+                <img
+                  key={image}
+                  src={image}
+                  alt={property.header.name}
+                  className="h-[222px] w-full rounded-3xl object-cover"
+                />
+              ))}
+            </div>
+          </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">

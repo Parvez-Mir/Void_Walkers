@@ -38,6 +38,7 @@ export function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const userEmail = user?.email || localStorage.getItem('email') || '';
+  const username = user?.username || user?.fullName || (userEmail ? userEmail.split('@')[0] : '');
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -99,9 +100,13 @@ export function Navbar() {
 
           {isAuthenticated ? (
             <div className="hidden items-center gap-3 md:flex">
-              <span className="max-w-[240px] truncate rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-white/80" title={userEmail || 'Email loading'}>
-                {userEmail || 'Email loading'}
-              </span>
+              <Link
+                to="/dashboard"
+                title={userEmail ? `Open dashboard (${userEmail})` : 'Open dashboard'}
+                className="max-w-[240px] truncate rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-white/80 transition-colors hover:border-amber-400/40 hover:bg-amber-400/10 hover:text-amber-300"
+              >
+                {username || 'Account'}
+              </Link>
               <button
                 type="button"
                 onClick={handleLogout}
@@ -113,10 +118,18 @@ export function Navbar() {
             </div>
           ) : (
             <div className="hidden items-center gap-4 md:flex">
-              <Link to="/login" className="rounded-lg px-4 py-2 font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white">
+              <Link
+                to="/login"
+                state={{ from: location }}
+                className="rounded-lg px-4 py-2 font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+              >
                 Login
               </Link>
-              <Link to="/signup" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 font-semibold text-slate-900 shadow-lg shadow-amber-500/30 transition-all duration-300 hover:scale-105 hover:from-amber-500 hover:to-amber-600">
+              <Link
+                to="/signup"
+                state={{ from: location }}
+                className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 font-semibold text-slate-900 shadow-lg shadow-amber-500/30 transition-all duration-300 hover:scale-105 hover:from-amber-500 hover:to-amber-600"
+              >
                 Get Started
               </Link>
             </div>
@@ -140,9 +153,13 @@ export function Navbar() {
             ))}
             {isAuthenticated ? (
               <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
-                <div className="truncate rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-center text-sm font-semibold text-white/80" title={userEmail || 'Email loading'}>
-                  {userEmail || 'Email loading'}
-                </div>
+                <Link
+                  to="/dashboard"
+                  title={userEmail ? `Open dashboard (${userEmail})` : 'Open dashboard'}
+                  className="truncate rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-center text-sm font-semibold text-white/80 transition-colors hover:border-amber-400/40 hover:bg-amber-400/10 hover:text-amber-300"
+                >
+                  {username || 'Account'}
+                </Link>
                 <button
                   type="button"
                   onClick={handleLogout}
@@ -154,10 +171,10 @@ export function Navbar() {
               </div>
             ) : (
               <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
-                <Link to="/login" className="rounded-lg border border-white/20 px-4 py-2 text-center font-semibold text-white">
+                <Link to="/login" state={{ from: location }} className="rounded-lg border border-white/20 px-4 py-2 text-center font-semibold text-white">
                   Login
                 </Link>
-                <Link to="/signup" className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-center font-semibold text-slate-900">
+                <Link to="/signup" state={{ from: location }} className="rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-center font-semibold text-slate-900">
                   Get Started
                 </Link>
               </div>

@@ -7,7 +7,6 @@ import Login from './pages/Login';
 import Properties from './pages/Properties';
 import PropertyDetails from './pages/PropertyDetails';
 import Register from './pages/Register';
-import Layout from './components/Layout';
 
 function PrivateRoute({ children }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -63,9 +62,7 @@ function App() {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <Layout>
-                <Dashboard />
-              </Layout>
+              <Dashboard />
             </PrivateRoute>
           }
         />
